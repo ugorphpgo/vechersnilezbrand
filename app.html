@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="vechar GPT booking prototype — интерактивная бронь ресторанов" />
+    <title>vechar — прототип</title>
+    <link rel="stylesheet" href="./app.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-logo" href="./index.html">vechar booking</a>
+      <nav class="site-nav" aria-label="Разделы">
+        <a href="./index.html">Обзор</a>
+        <a class="active" href="./app.html">Прототип</a>
+        <a href="./brandbook.html">Брендбук</a>
+      </nav>
+    </header>
+
+    <main class="stage">
+      <p class="prototype-note">
+        Карта открыта сразу. Нажмите на пин или слот времени, переключайтесь между поиском, главной, бронями и профилем.
+      </p>
+
+      <div class="phone" id="phone">
+        <div class="phone-status" aria-hidden="true">
+          <span>13:18</span>
+          <span>25%</span>
+        </div>
+
+        <section class="screen screen-map active" data-screen="search" aria-label="Карта ресторанов">
+          <div class="map-art">
+            <div class="map-grid"></div>
+            <div class="map-park park-a"></div>
+            <div class="map-park park-b"></div>
+            <div class="map-river"></div>
+            <div class="map-road diagonal-a"></div>
+            <div class="map-road diagonal-b"></div>
+            <div id="pins" class="pins"></div>
+          </div>
+
+          <div class="map-top">
+            <button class="location-pill" type="button" id="partyButton">2 гостя · сегодня · 16:30</button>
+            <label class="search-box" aria-label="Поиск ресторана">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="M20 20l-3.4-3.4"></path>
+              </svg>
+              <input id="searchInput" type="search" placeholder="Ресторан, кухня или район" autocomplete="off" />
+            </label>
+            <div class="filter-toolbar">
+              <button class="filter-open" type="button" id="filterOpenButton" aria-label="Открыть фильтры">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 7h16M7 12h10M10 17h4"></path>
+                </svg>
+                <span id="filterCount" hidden></span>
+              </button>
+              <div class="filter-row" id="filters"></div>
+            </div>
+          </div>
+
+          <section class="map-sheet" aria-label="Рестораны рядом">
+            <div class="sheet-handle" aria-hidden="true"></div>
+            <header class="sheet-title">
+              <div>
+                <p>Минск · центр</p>
+                <h1>Доступные столики</h1>
+              </div>
+              <button type="button" id="sortButton">Авто</button>
+            </header>
+            <div class="restaurant-list" id="restaurantList"></div>
+          </section>
+
+          <article class="map-preview-card" id="mapPreviewCard" aria-live="polite" hidden>
+            <button class="map-preview-close" type="button" id="mapPreviewClose" aria-label="Закрыть карточку">×</button>
+            <div class="map-preview-photo" id="mapPreviewPhoto"></div>
+            <div class="map-preview-body">
+              <button class="bookmark map-preview-bookmark" type="button" aria-label="Сохранить ресторан">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M6 4h12v17l-6-4-6 4z"></path>
+                </svg>
+              </button>
+              <h2 id="mapPreviewName"></h2>
+              <p class="map-preview-rating" id="mapPreviewRating"></p>
+              <p class="map-preview-meta" id="mapPreviewMeta"></p>
+              <div class="map-preview-slots" id="mapPreviewSlots"></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="filter-panel" id="filterPanel" aria-label="Фильтры ресторанов" aria-hidden="true">
+          <div class="filter-scrim"></div>
+          <div class="filter-sheet">
+            <header class="filter-sheet-top">
+              <button type="button" id="filterCancel">Отмена</button>
+              <button type="button" id="filterClear">Очистить</button>
+            </header>
+
+            <div class="filter-content">
+              <section class="filter-section">
+                <h2>Сортировка</h2>
+                <div class="segmented" data-filter-group="sort">
+                  <button class="active" type="button" data-value="auto">Авто</button>
+                  <button type="button" data-value="distance">Расстояние</button>
+                  <button type="button" data-value="newest">Популярные</button>
+                  <button type="button" data-value="rating">Рейтинг</button>
+                </div>
+              </section>
+
+              <section class="filter-section">
+                <h2>Расстояние</h2>
+                <div class="segmented" data-filter-group="distance">
+                  <button class="active" type="button" data-value="auto">Авто</button>
+                  <button type="button" data-value="1">1 км</button>
+                  <button type="button" data-value="3">3 км</button>
+                  <button type="button" data-value="15">15 км</button>
+                  <button type="button" data-value="40">40 км</button>
+                </div>
+              </section>
+
+              <section class="filter-section">
+                <h2>Фильтры</h2>
+                <details class="filter-group" open>
+                  <summary>
+                    <span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="10" rx="2"></rect><circle cx="12" cy="12" r="2"></circle></svg>
+                      Цена
+                    </span>
+                  </summary>
+                  <label><span>₽₽</span><input type="checkbox" name="price" value="$$" /></label>
+                  <label><span>₽₽₽</span><input type="checkbox" name="price" value="$$$" /></label>
+                  <label><span>₽₽₽₽</span><input type="checkbox" name="price" value="$$$$" /></label>
+                </details>
+
+                <details class="filter-group" open>
+                  <summary>
+                    <span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V7l6-3 6 3 4-2v16"></path><path d="M9 8h2M9 12h2M15 10h2M15 14h2M6 16h2"></path></svg>
+                      Район
+                    </span>
+                  </summary>
+                  <label><span>Немига</span><input type="checkbox" name="neighborhood" value="nemiga" /></label>
+                  <label><span>Пушкинская</span><input type="checkbox" name="neighborhood" value="upper-city" /></label>
+                  <label><span>Троицкое предместье</span><input type="checkbox" name="neighborhood" value="trinity" /></label>
+                  <label><span>Зыбицкая</span><input type="checkbox" name="neighborhood" value="zybitskaya" /></label>
+                  <label><span>Проспект Независимости</span><input type="checkbox" name="neighborhood" value="independence" /></label>
+                </details>
+
+                <details class="filter-group">
+                  <summary>
+                    <span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v20M3 2v7a4 4 0 0 0 8 0V2M17 2v20M17 2c2.2 1.2 4 4.3 4 8h-4"></path></svg>
+                      Кухня
+                    </span>
+                  </summary>
+                  <label><span>Итальянская</span><input type="checkbox" name="cuisine" value="italian" /></label>
+                  <label><span>Японская</span><input type="checkbox" name="cuisine" value="japanese" /></label>
+                  <label><span>Беларуская</span><input type="checkbox" name="cuisine" value="belarusian" /></label>
+                  <label><span>Грузинская</span><input type="checkbox" name="cuisine" value="georgian" /></label>
+                  <label><span>Испанская</span><input type="checkbox" name="cuisine" value="spanish" /></label>
+                  <label><span>Авторская</span><input type="checkbox" name="cuisine" value="chef" /></label>
+                </details>
+
+                <details class="filter-group">
+                  <summary>
+                    <span>
+                      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17h16M7 17v4M17 17v4M6 11h12l2 6H4zM9 11V7a3 3 0 0 1 6 0v4"></path></svg>
+                      Особенности
+                    </span>
+                  </summary>
+                  <label><span>Места на открытом воздухе</span><input type="checkbox" name="feature" value="outdoor" /></label>
+                  <label><span>Можно курить в помещении</span><input type="checkbox" name="feature" value="smoking" /></label>
+                </details>
+              </section>
+            </div>
+
+            <footer class="filter-apply-bar">
+              <button type="button" id="filterApply">Применить</button>
+            </footer>
+          </div>
+        </section>
+
+        <section class="screen screen-home" data-screen="home" aria-label="Главная с подборками ресторанов">
+          <header class="home-header">
+            <div>
+              <p>Добрый день, ihar</p>
+              <h2>Найдите столик в Минске</h2>
+            </div>
+            <div class="home-avatar" aria-hidden="true">is</div>
+          </header>
+
+          <div class="home-context">
+            <button type="button" id="homePartyButton">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <span>2 · сегодня в 16:30</span>
+            </button>
+            <button type="button" id="homeLocationButton">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-4.7 7-11a7 7 0 1 0-14 0c0 6.3 7 11 7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+              <span>Минск, центр</span>
+            </button>
+          </div>
+
+          <section class="home-section">
+            <div class="home-section-title">
+              <h3>Забронировать ужин сегодня</h3>
+              <button type="button" data-home-search="all">СМОТРЕТЬ ВСЕ</button>
+            </div>
+            <div class="home-card-row" id="homeDinnerCarousel"></div>
+          </section>
+
+          <section class="home-section">
+            <div class="home-section-title">
+              <h3>Самые популярные на этой неделе</h3>
+              <button type="button" data-home-search="all">СМОТРЕТЬ ВСЕ</button>
+            </div>
+            <p class="home-section-copy">Подборка заведений, которые чаще всего бронируют и сохраняют другие гости.</p>
+            <div class="ranked-list">
+              <button type="button" data-home-restaurant="oita"><span>1</span><strong>OITA Soho</strong><small>Японская кухня · Троицкое предместье · 420 м</small></button>
+              <button type="button" data-home-restaurant="riviera"><span>2</span><strong>Riviera Wine Hall</strong><small>Современная европейская · Немига · 650 м</small></button>
+              <button type="button" data-home-restaurant="kuchmistr"><span>3</span><strong>Кухмистр</strong><small>Беларуская кухня · 1.5 км</small></button>
+            </div>
+          </section>
+
+          <section class="home-section">
+            <div class="home-section-title">
+              <h3>Выбор по кухне и категориям</h3>
+              <button type="button" data-home-search="all">СМОТРЕТЬ ВСЕ</button>
+            </div>
+            <div class="cuisine-row">
+              <button type="button" data-cuisine-jump="italian"><span class="cuisine Italian"></span>Итальянская</button>
+              <button type="button" data-cuisine-jump="japanese"><span class="cuisine Japanese"></span>Японская</button>
+              <button type="button" data-cuisine-jump="belarusian"><span class="cuisine Belarusian"></span>Беларуская</button>
+              <button type="button" data-cuisine-jump="georgian"><span class="cuisine Georgian"></span>Грузинская</button>
+              <button type="button" data-cuisine-jump="spanish"><span class="cuisine Spanish"></span>Испанская</button>
+              <button type="button" data-home-search="terrace"><span class="cuisine Terrace"></span>Террасы</button>
+              <button type="button" data-home-search="date"><span class="cuisine Date"></span>Для свидания</button>
+            </div>
+          </section>
+
+          <section class="home-section">
+            <div class="home-section-title">
+              <h3>Районы рядом</h3>
+              <button type="button" data-home-search="all">СМОТРЕТЬ ВСЕ</button>
+            </div>
+            <div class="area-row">
+              <button type="button" data-area-jump="nemiga">Немига</button>
+              <button type="button" data-area-jump="upper-city">Верхний город</button>
+              <button type="button" data-area-jump="trinity">Троицкое</button>
+              <button type="button" data-area-jump="zybitskaya">Зыбицкая</button>
+            </div>
+          </section>
+        </section>
+
+        <section class="screen screen-reservations" data-screen="reservations" aria-label="Брони пользователя">
+          <header class="page-header">
+            <h2>Брони</h2>
+          </header>
+          <section class="reservation-block">
+            <h3>Предстоящие (<span id="reservationCount">1</span>)</h3>
+            <article class="reservation-card">
+              <div class="reservation-photo"></div>
+              <div class="reservation-body">
+                <button class="bookmark" type="button" aria-label="Сохранить ресторан">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 4h12v17l-6-4-6 4z"></path>
+                  </svg>
+                </button>
+                <h4 id="reservationName">OITA Soho</h4>
+                <p class="confirmed">
+                  <span aria-hidden="true">✓</span>
+                  Бронь подтверждена
+                </p>
+                <div class="reservation-meta">
+                  <span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span id="reservationGuests">2</span>
+                  </span>
+                  <span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M8 2v4M16 2v4M3 10h18"></path></svg>
+                    <span id="reservationTime">Сегодня в 16:30</span>
+                  </span>
+                </div>
+              </div>
+            </article>
+          </section>
+          <section class="past-empty">
+            <h3>Прошлые</h3>
+            <p>После первого визита здесь появятся прошлые брони и быстрый повтор заказа столика.</p>
+          </section>
+        </section>
+
+        <section class="screen screen-profile" data-screen="profile" aria-label="Профиль пользователя">
+          <header class="profile-top">
+            <button type="button" class="back-button" aria-label="Назад">←</button>
+          </header>
+          <section class="profile-hero">
+            <div class="avatar">
+              <span>IS</span>
+              <button type="button" aria-label="Изменить фото">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8 7l1.5-2h5L16 7h3a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
+                  <circle cx="12" cy="13" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <h2>ihar SHCHATSININ</h2>
+            <p>С нами с мая 2026</p>
+          </section>
+          <section class="stats">
+            <h3>Ваша статистика</h3>
+            <div class="stats-row">
+              <div><strong id="profileReservations">1</strong><span>Брони</span></div>
+              <div><strong>0</strong><span>Отзывы</span></div>
+              <div><strong>0</strong><span>Фото</span></div>
+            </div>
+          </section>
+          <section class="profile-list">
+            <button type="button">Сохранённые рестораны <span>›</span></button>
+            <button type="button">О вас <span>›</span></button>
+            <div class="profile-note">
+              <p>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2v20M3 2v7a4 4 0 0 0 8 0V2M17 2v20M17 2c2.2 1.2 4 4.3 4 8h-4"></path></svg>
+                Нет пищевых предпочтений
+              </p>
+              <p>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M8 2v4M16 2v4M3 10h18"></path></svg>
+                Нет важных дат
+              </p>
+            </div>
+            <button type="button">Настройки аккаунта <span>›</span></button>
+          </section>
+          <button type="button" class="sign-out">Выйти</button>
+        </section>
+
+        <nav class="tab-bar" aria-label="Нижняя навигация">
+          <button class="tab" type="button" data-tab="home">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5V21h-6v-6H9v6H3z"></path></svg>
+            <span>Главная</span>
+          </button>
+          <button class="tab active" type="button" data-tab="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.4-3.4"></path></svg>
+            <span>Поиск</span>
+          </button>
+          <button class="tab" type="button" data-tab="reservations">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="16" rx="2"></rect><path d="M8 3v4M16 3v4M4 11h16"></path></svg>
+            <span>Брони</span>
+          </button>
+          <button class="tab" type="button" data-tab="profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21a8 8 0 0 0-16 0"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Профиль</span>
+          </button>
+        </nav>
+
+        <div class="booking-drawer" id="bookingDrawer" aria-live="polite" aria-hidden="true">
+          <div>
+            <p id="drawerRestaurant">Riviera Wine Hall</p>
+            <strong id="drawerDetails">2 гостя · сегодня · 16:30</strong>
+          </div>
+          <button type="button" id="confirmBooking" disabled tabindex="-1">Подтвердить</button>
+        </div>
+      </div>
+    </main>
+
+    <div class="toast" id="toast" aria-live="polite"></div>
+    <script src="./theme-editor.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="vechar GPT booking brandbook — токены, компоненты и принципы" />
+    <title>vechar  — брендбук by snilezyz</title>
+    <link rel="stylesheet" href="./brandbook.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-logo" href="./index.html">vechar</a>
+      <nav class="site-nav" aria-label="Разделы">
+        <a href="./index.html">Обзор</a>
+        <a href="./app.html">Прототип</a>
+        <a class="active" href="./brandbook.html">Брендбук</a>
+      </nav>
+    </header>
+
+    <main class="brandbook">
+      <section class="brand-hero">
+        <p class="eyebrow">Брендбук </p>
+        <h1> vechar-бронирование бронирование ресторанов - основные стили</h1>
+        <p>
+          Отдельная визуальная система для сценария бронирования ресторанов: светлая, тёплая, с винным бордовым акцентом 
+        </p>
+      </section>
+
+      <section class="section editor-section">
+        <div class="section-title">
+          <p>00</p>
+          <h2>Редактор в реальном времени</h2>
+        </div>
+        <p class="editor-note">
+          Изменения сохраняются локально и сразу применяются к открытому прототипу. Откройте <code>app.html</code> рядом с брендбуком, чтобы видеть результат.
+        </p>
+        <div class="editor-grid">
+          <label>
+            <span>Основной бордовый</span>
+            <input type="color" data-theme-field="wine600" />
+          </label>
+          <label>
+            <span>Глубокий бордовый</span>
+            <input type="color" data-theme-field="wine700" />
+          </label>
+          <label>
+            <span>Фон приложения</span>
+            <input type="color" data-theme-field="cream100" />
+          </label>
+          <label>
+            <span>Цвет текста</span>
+            <input type="color" data-theme-field="ink900" />
+          </label>
+          <label>
+            <span>Масштаб шрифта</span>
+            <input type="range" min="0.9" max="1.14" step="0.01" data-theme-field="fontScale" />
+            <output data-theme-output="fontScale"></output>
+          </label>
+          <label>
+            <span>Скругление компонентов</span>
+            <input type="range" min="0.75" max="1.45" step="0.01" data-theme-field="radiusScale" />
+            <output data-theme-output="radiusScale"></output>
+          </label>
+          <label>
+            <span>Ширина карточек</span>
+            <input type="range" min="250" max="330" step="1" data-theme-field="cardWidth" />
+            <output data-theme-output="cardWidth"></output>
+          </label>
+          <label>
+            <span>Размер слотов времени</span>
+            <input type="range" min="0.85" max="1.24" step="0.01" data-theme-field="slotScale" />
+            <output data-theme-output="slotScale"></output>
+          </label>
+        </div>
+        <div class="editor-actions">
+          <button type="button" class="btn-primary" id="resetTheme">Сбросить настройки</button>
+          <a class="btn-secondary" href="./app.html">Открыть прототип</a>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <p>01</p>
+          <h2>Цветовые токены</h2>
+        </div>
+        <div class="swatches">
+          <article class="swatch"><div style="background:#741d2c"></div><h3>Главное действие</h3><button data-hex="#741D2C">#741D2C</button></article>
+          <article class="swatch"><div style="background:#3b1118"></div><h3>Сильный акцент</h3><button data-hex="#3B1118">#3B1118</button></article>
+          <article class="swatch"><div style="background:#aa3a4c"></div><h3>Вторичный акцент</h3><button data-hex="#AA3A4C">#AA3A4C</button></article>
+          <article class="swatch"><div style="background:#fffdfb"></div><h3>Поверхность карточек</h3><button data-hex="#FFFDFB">#FFFDFB</button></article>
+          <article class="swatch"><div style="background:#fbf6f1"></div><h3>Фон интерфейса</h3><button data-hex="#FBF6F1">#FBF6F1</button></article>
+          <article class="swatch"><div style="background:#21191b"></div><h3>Основной текст</h3><button data-hex="#21191B">#21191B</button></article>
+          <article class="swatch"><div style="background:#c9dce4"></div><h3>Водный слой карты</h3><button data-hex="#C9DCE4">#C9DCE4</button></article>
+          <article class="swatch"><div style="background:#d8dfc2"></div><h3>Зелёный слой карты</h3><button data-hex="#D8DFC2">#D8DFC2</button></article>
+        </div>
+        <aside class="color-notes" aria-label="Пояснения к цветам">
+          <article>
+            <span style="background:#741d2c"></span>
+            <div>
+              <h3>Главное действие</h3>
+              <p>Главный action-цвет: слоты времени, активные фильтры, CTA и выбранные состояния.</p>
+            </div>
+          </article>
+          <article>
+            <span style="background:#3b1118"></span>
+            <div>
+              <h3>Сильный акцент</h3>
+              <p>Используется для сильных акцентов: выбранные пины, toast, тёмные элементы поверх карты.</p>
+            </div>
+          </article>
+          <article>
+            <span style="background:#aa3a4c"></span>
+            <div>
+              <h3>Вторичный акцент</h3>
+              <p>Подходит для вторичных акцентов, hover-состояний и декоративных градиентов карточек.</p>
+            </div>
+          </article>
+          <article>
+            <span style="background:#fffdfb"></span>
+            <div>
+              <h3>Поверхность карточек</h3>
+              <p>Чистая поверхность интерфейса: карточки ресторанов, нижние панели и модальные области.</p>
+            </div>
+          </article>
+          <article>
+            <span style="background:#fbf6f1"></span>
+            <div>
+              <h3>Фон интерфейса</h3>
+              <p>Основной фон страниц, который делает продукт светлым, но не холодно-белым.</p>
+            </div>
+          </article>
+          <article>
+            <span style="background:#21191b"></span>
+            <div>
+              <h3>Основной текст</h3>
+              <p>Основной цвет для заголовков, названий ресторанов и важных числовых значений.</p>
+            </div>
+          </article>
+          <article>
+            <span style="background:#c9dce4"></span>
+            <div>
+              <h3>Водный слой карты</h3>
+              <p>Спокойный навигационный цвет для рек, каналов и вторичных картографических пятен.</p>
+            </div>
+          </article>
+          <article>
+            <span style="background:#d8dfc2"></span>
+            <div>
+              <h3>Зелёный слой карты</h3>
+              <p>Зелёный слой карты: парки, скверы и мягкое разделение городских зон.</p>
+            </div>
+          </article>
+        </aside>
+      </section>
+
+      <section class="section split">
+        <div class="section-title">
+          <p>02</p>
+          <h2>Типографика</h2>
+        </div>
+        <div class="type-card">
+          <p class="display">Сегодня, а не когда-нибудь.</p>
+          <p class="headline">Доступные столики рядом</p>
+          <p class="body-copy">Onest отвечает за уверенные заголовки и ресторанное настроение. Inter оставляет интерфейс читаемым в карточках, слотах времени и навигации.</p>
+          <p class="caption">Заголовки: Onest 800 · Интерфейс: Inter 400/500/700/800</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">
+          <p>03</p>
+          <h2>Компоненты</h2>
+        </div>
+        <div class="component-row">
+          <button class="demo-primary" type="button">Подтвердить бронь</button>
+          <button class="demo-chip active" type="button">Вино</button>
+          <button class="demo-chip" type="button">Терраса</button>
+          <button class="demo-slot" type="button">19:30</button>
+          <button class="demo-slot disabled" type="button" disabled>20:45</button>
+        </div>
+        <div class="component-grid">
+          <article class="demo-restaurant">
+            <div>
+              <h3>OITA Soho</h3>
+              <p>4.8 (836 отзывов) · 420 м · ₽₽₽ · Японская идзакая</p>
+              <div><span>Свидание</span><span>Вино</span></div>
+            </div>
+            <div class="demo-photo"></div>
+          </article>
+          <article class="demo-reservation">
+            <div class="demo-reservation-photo"></div>
+            <div>
+              <h3>OITA Soho</h3>
+              <p><span>✓</span> Бронь подтверждена</p>
+              <small>2 · Сегодня в 16:30</small>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section principles">
+        <div class="section-title">
+          <p>04</p>
+                </div>
+        
+      </section>
+    </main>
+
+    <div class="toast" id="toast" aria-live="polite"></div>
+    <script src="./theme-editor.js"></script>
+    <script src="./brandbook.js"></script>
+  </body>
+</html>
